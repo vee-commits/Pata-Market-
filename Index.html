@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pata Market — Pata Unachotafuta. Uza Unachonacho.</title>
+    
+    <!-- PWA Settings for Standalone Native Experience -->
+    <meta name="theme-color" content="#0A5C36">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Pata Market">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%230A5C36'><rect width='512' height='512' rx='100' fill='%230A5C36'/><path d='M160 160h192v48H160zm-32 80h256v160H128z' fill='%23FACC15'/></svg>">
+    
+    <!-- Embedded PWA Manifest -->
+    <link rel="manifest" href="data:application/manifest+json;utf8,%7B%22name%22%3A%22Pata%20Market%20Kenya%22%2C%22short_name%22%3A%22PataMarket%22%2C%22start_url%22%3A%22index.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230A5C36%22%2C%22theme_color%22%3A%22%230A5C36%22%2C%22description%22%3A%22Kenyan%20Local%20Marketplace%22%7D">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepGreen: '#0A5C36',
+                        warmYellow: '#FACC15',
+                        darkGreenHover: '#08482A',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans h-full flex flex-col justify-between antialiased selection:bg-deepGreen selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-deepGreen text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Tagline -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="router('home')">
+                    <div class="bg-warmYellow text-deepGreen p-2 rounded-xl font-black text-xl shadow flex items-center justify-center w-10 h-10">
+                        <i class="fa-solid fa-store">
