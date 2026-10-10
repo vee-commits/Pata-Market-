@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pata Market — Pata Unachotafuta. Uza Unachonacho.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepGreen: '#0A5C36',
+                        warmYellow: '#FACC15',
+                        darkGreenHover: '#08482A',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans h-full flex flex-col justify-between antialiased selection:bg-deepGreen selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-deepGreen text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Tagline -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="router.navigate('home')">
+                    <div class="bg-warmYellow text-deepGreen p-2 rounded-xl font-black text-xl shadow flex items-center justify-center w-10 h-10">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold tracking-tight text-white">Pata<span class="text-warmYellow">Market</span></span>
+                        <p class="text-[10px] text-gray-200 hidden sm:block tracking-wide">Pata Unachotafuta. Uza Unachonacho.</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Search & Actions -->
+                <div class="hidden md:flex items-center space-x-4 flex-1 max-w-md mx-6">
+                    <div class="relative w-full">
+                        <input type="text" id="desktopSearchInput" placeholder="What are you looking for?" class="w-full pl-10 pr-4 py-2 rounded-full text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-warmYellow shadow-inner" oninput="handleSearchInput(this.value)">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- User Actions -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="router.navigate('nearby')" class="hidden sm:flex items-center space-x-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+                        <i class="fa-solid fa-location-crosshairs text-warmYellow"></i>
+                        <span>Near Me</span>
+                    </button>
+                    <button onclick="checkSellerAccess()" class="bg-warmYellow hover:bg-yellow-400 text-deepGreen text-xs font-bold px-3 py-2 rounded-lg shadow transition flex items-center space-x-1">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Become a Seller</span>
+                    </button>
+                    <div id="authNavArea" class="flex items-center space-x-2">
+                        <button onclick="openModal('authModal')" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg font-medium transition">
+                            Sign In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Search Bar Sub-header -->
+        <div class="md:hidden bg-emerald-900 px-4 py-2 flex items-center space-x-2 border-t border-emerald-800">
+            <div class="relative flex-1">
+                <input type="text" id="mobileSearchInput" placeholder="What are you looking for?" class="w-full pl-9 pr-3 py-1.5 rounded-full text-xs text-gray-800 bg-white focus:outline-none" oninput="handleSearchInput(this.value)">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+            </div>
+            <button onclick="router.navigate('nearby')" class="bg-warmYellow text-deepGreen px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow">
+                <i class="fa-solid fa-location-crosshairs"></i> Near Me
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Container -->
+    <main id="appContent" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Rendered dynamically by JavaScript router -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-deepGreen text-gray-300 border-t border-emerald-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="bg-warmYellow text-deepGreen p-1.5 rounded-lg font-bold text-sm">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                        <span class="text-lg font-bold text-white">Pata Market</span>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Kenya's premier trusted marketplace connecting buyers with local shops, products, and services across all 47 counties.
+                    </p>
+                    <p class="text-xs text-warmYellow mt-3 font-medium">Till Number: 8221168 (KSh 200 Seller Registration)</p>
+                </div>
+                <div>
+                    <h4 class="text-white text-sm font-semibold uppercase tracking-wider mb-3">Quick Links</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" onclick="router.navigate('home')" class="hover:text-warmYellow transition">Browse Homepage</a></li>
+                        <li><a href="#" onclick="router.navigate('categories')" class="hover:text-warmYellow transition">All Categories</a></li>
+                        <li><a href="#" onclick="router.navigate('nearby')" class="hover:text-warmYellow transition">Find Items Near Me</a></li>
+                        <li><a href="#" onclick="openModal('sellerModal')" class="hover:text-warmYellow transition">Become a Seller (KSh 200)</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white text-sm font-semibold uppercase tracking-wider mb-3">Trust & Safety</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" onclick="openStaticModal('Terms & Conditions', 'All users must abide by Kenyan trade laws. Fraudulent M-Pesa codes will result in permanent account bans.')" class="hover:text-warmYellow transition">Terms & Conditions</a></li>
+                        <li><a href="#" onclick="openStaticModal('Privacy Policy', 'We respect your privacy. Location is only used on demand for proximity search and never stored.')" class="hover:text-warmYellow transition">Privacy Policy</a></li>
+                        <li><a href="#" onclick="openStaticModal('M-Pesa Verification', 'Seller registration requires a one-time KSh 200 payment to Till 8221168 verified by our admin team.')" class="hover:text-warmYellow transition">M-Pesa Till 8221168 Guide</a></li>
+                        <li><a href="#" onclick="openStaticModal('Prohibited Goods', 'Counterfeit items, weapons, and illegal substances are strictly prohibited on Pata Market.')" class="hover:text-warmYellow transition">Prohibited Goods Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white text-sm font-semibold uppercase tracking-wider mb-3">Customer Support</h4>
+                    <p class="text-xs text-gray-300 mb-2">Need assistance? Reach our Kenyan support team.</p>
+                    <p class="text-xs text-white font-semibold mb-1"><i class="fa-solid fa-phone text-warmYellow mr-2"></i> +254 700 000000</p>
+                    <p class="text-xs text-white font-semibold mb-3"><i class="fa-solid fa-envelope text-warmYellow mr-2"></i> support@patamarket.co.ke</p>
+                    <div class="flex space-x-3 text-lg">
+                        <a href="#" class="text-gray-300 hover:text-warmYellow"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-warmYellow"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-warmYellow"><i class="fa-brands fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-emerald-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400">
+                <p>&copy; 2026 Pata Market Kenya. All rights reserved.</p>
+                <p class="mt-2 sm:mt-0">Tagline: “Pata Unachotafuta. Uza Unachonacho.”</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals Container -->
+    <!-- 1. Auth Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative animate-fadeIn">
+            <button onclick="closeModal('authModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="text-center mb-6">
+                <div class="bg-deepGreen text-warmYellow w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 text-lg font-bold shadow">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="text-xl font-bold text-deepGreen" id="authModalTitle">Sign In to Pata Market</h3>
+                <p class="text-xs text-gray-500 mt-1">Access your buyer or seller account securely</p>
+            </div>
+            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="nameFieldContainer" class="hidden">
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="authName" placeholder="e.g. John Kamau" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-deepGreen outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Phone Number or Email</label>
+                    <input type="text" id="authEmailPhone" required placeholder="e.g. 0712345678 or email@domain.com" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-deepGreen outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-deepGreen outline-none">
+                </div>
+                <button type="submit" id="authSubmitBtn" class="w-full bg-deepGreen hover:bg-darkGreenHover text-white py-2.5 rounded-lg text-sm font-bold shadow transition">
+                    Sign In
+                </button>
+            </form>
+            <div class="mt-4 text-center text-xs">
+                <span id="authToggleText" class="text-gray-600">Don't have an account?</span>
+                <button onclick="toggleAuthMode()" class="text-deepGreen font-bold ml-1 hover:underline" id="authToggleBtn">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Seller Registration / Payment Modal -->
+    <div id="sellerModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('sellerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="text-center mb-4">
+                <div class="bg-warmYellow text-deepGreen w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-bold shadow">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+                <h3 class="text-xl font-bold text-deepGreen">Become a Verified Seller</h3>
+                <p class="text-xs text-gray-600 mt-1">One-time seller registration fee: <span class="font-bold text-deepGreen bg-amber-100 px-2 py-0.5 rounded">KSh 200</span></p>
+            </div>
+
+            <div id="sellerStep1">
+                <form onsubmit="handleSellerBusinessSubmit(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Business Name</label>
+                        <input type="text" id="bizName" required placeholder="e.g. Kamau Electronics & Spares" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-deepGreen">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">County</label>
+                            <select id="bizCounty" class="w-full px-3 py-2 border rounded-lg text-sm outline-none bg-white">
+                                <option value="Nairobi">Nairobi</option>
+                                <option value="Mombasa">Mombasa</option>
+                                <option value="Nakuru">Nakuru</option>
+                                <option value="Kiambu">Kiambu</option>
+                                <option value="Kisumu">Kisumu</option>
+                                <option value="Uasin Gishu">Uasin Gishu (Eldoret)</option>
+                                <option value="Machakos">Machakos</option>
+                                <option value="Meru">Meru</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Town / Estate</label>
+                            <input type="text" id="bizTown" required placeholder="e.g. CBD, Westlands" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">WhatsApp / Contact Phone</label>
+                        <input type="tel" id="bizPhone" required placeholder="0712345678" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Business Category</label>
+                        <select id="bizCategory" class="w-full px-3 py-2 border rounded-lg text-sm outline-none bg-white">
+                            <option value="Phones and Electronics">Phones and Electronics</option>
+                            <option value="Fashion and Clothing">Fashion and Clothing</option>
+                            <option value="Home and Furniture">Home and Furniture</option>
+                            <option value="Automotive">Automotive</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Business and Professional Services">Business and Professional Services</option>
+                            <option value="Hardware and Construction">Hardware and Construction</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-deepGreen hover:bg-darkGreenHover text-white py-2.5 rounded-lg text-sm font-bold shadow transition mt-2">
+                        Proceed to M-Pesa Payment (KSh 200)
+                    </button>
+                </form>
+            </div>
+
+            <div id="sellerStep2" class="hidden space-y-4">
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900">
+                    <p class="font-bold text-sm mb-1"><i class="fa-solid fa-mobile-screen-button text-deepGreen mr-1"></i> M-Pesa Till Payment Instructions</p>
+                    <ol class="list-decimal list-inside space-y-1 mt-2 text-gray-700">
+                        <li>Go to M-Pesa menu on your phone.</li>
+                        <li>Select <strong>Lipa na M-Pesa</strong> &gt; <strong>Buy Goods and Services</strong>.</li>
+                        <li>Enter Till Number: <strong class="text-deepGreen text-sm bg-amber-100 px-1.5 py-0.5 rounded">8221168</strong></li>
+                        <li>Enter Amount: <strong class="text-deepGreen">KSh 200</strong></li>
+                        <li>Enter your M-Pesa PIN and send.</li>
+                        <li>Copy the M-Pesa Transaction Code (e.g., <code class="bg-gray-100 px-1 py-0.5 rounded">QHX7...</code>) and paste below.</li>
+                    </ol>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">M-Pesa Transaction Code</label>
+                    <input type="text" id="mpesaCodeInput" placeholder="e.g. QHJ892K1L2" class="w-full px-3.5 py-2.5 border rounded-lg text-sm uppercase font-mono tracking-wide outline-none focus:ring-2 focus:ring-deepGreen">
+                </div>
+
+                <div class="flex space-x-2">
+                    <button onclick="submitMpesaPayment()" class="flex-1 bg-deepGreen hover:bg-darkGreenHover text-white py-2.5 rounded-lg text-sm font-bold shadow transition">
+                        Submit Payment for Verification
+                    </button>
+                    <button onclick="simulateStkPush()" class="bg-warmYellow hover:bg-yellow-400 text-deepGreen px-4 py-2.5 rounded-lg text-xs font-bold shadow transition flex items-center justify-center space-x-1">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>STK Push</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="sellerStep3" class="hidden text-center py-4 space-y-3">
+                <div class="w-16 h-16 bg-emerald-100 text-deepGreen rounded-full flex items-center justify-center mx-auto text-2xl shadow">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <h4 class="text-lg font-bold text-deepGreen">Payment Pending Verification</h4>
+                <p class="text-xs text-gray-600 max-w-xs mx-auto">
+                    Your M-Pesa payment claim has been submitted to Till <span class="font-bold text-deepGreen">8221168</span>. Our administrator will verify the transaction code shortly.
+                </p>
+                <div class="bg-gray-50 p-3 rounded-lg text-xs font-mono text-gray-700 inline-block">
+                    Status: <span class="text-amber-600 font-bold">Pending Admin Review</span>
+                </div>
+                <div>
+                    <button onclick="closeModal('sellerModal'); router.navigate('dashboard');" class="mt-2 bg-deepGreen text-white text-xs px-5 py-2 rounded-lg font-bold shadow">
+                        Go to Seller Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Static Info Modal -->
+    <div id="staticModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto">
+            <button onclick="closeModal('staticModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 id="staticModalTitle" class="text-lg font-bold text-deepGreen mb-3">Information</h3>
+            <div id="staticModalBody" class="text-xs text-gray-600 space-y-2 leading-relaxed"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Core -->
+    <script>
+        // --- Application State ---
+        let currentUser = null; // { name, phone, role: 'buyer'|'seller'|'admin', isPaidSeller, business }
+        let currentRoute = 'home';
+        let searchKeyword = '';
+        let selectedCategoryFilter = 'All';
+        let selectedCountyFilter = 'All';
+        let activeNearbyDistance = 50; // km
+        let userCoords = null; // { lat, lng }
+
+        // Mock Database: Categories
+        const categories = [
+            { name: "Phones and Electronics", icon: "fa-mobile-screen-button", count: 1240 },
+            { name: "Fashion and Clothing", icon: "fa-shirt", count: 980 },
+            { name: "Home and Furniture", icon: "fa-couch", count: 540 },
+            { name: "Automotive", icon: "fa-car", count: 430 },
+            { name: "Agriculture", icon: "fa-seedling", count: 760 },
+            { name: "Business & Professional Services", icon: "fa-briefcase", count: 320 },
+            { name: "Hardware & Construction", icon: "fa-hammer", count: 290 },
+            { name: "Beauty and Personal Care", icon: "fa-spray-can-sparkles", count: 410 },
+            { name: "Food and Groceries", icon: "fa-basket-shopping", count: 650 },
+            { name: "Baby and Children's Products", icon: "fa-child", count: 210 },
+            { name: "Stationery and Office Supplies", icon: "fa-pen-clip", count: 180 },
+            { name: "Sports and Fitness", icon: "fa-dumbbell", count: 150 }
+        ];
+
+        // Mock Database: Listings
+        let listings = [
+            {
+                id: 1,
+                title: "Samsung Galaxy A14 - 64GB (Brand New)",
+                category: "Phones and Electronics",
+                price: 16500,
+                county: "Nairobi",
+                town: "CBD, Luthuli Ave",
+                lat: -1.286389, lng: 36.817223,
+                seller: "Kamau Gadgets Ltd",
+                phone: "0712345678",
+                image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80",
+                description: "Original Samsung Galaxy A14 with 1 year warranty. Dual SIM, 5000mAh battery. Free delivery in Nairobi CBD.",
+                date: "Today, 10:30 AM",
+                views: 142
+            },
+            {
+                id: 2,
+                title: "Fresh Organic Sukuma Wiki & Tomatoes (Per Crate/Bunch)",
+                category: "Agriculture",
+                price: 1200,
+                county: "Kiambu",
+                town: "Kiambu Town",
+                lat: -1.1714, lng: 36.8356,
+                seller: "Mama Njeri Farm Fresh",
+                phone: "0722987654",
+                image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+                description: "Harvested this morning from Kiambu highlands. Clean, fresh, and pesticide-free vegetables wholesale and retail.",
+                date: "Today, 08:15 AM",
+                views: 89
+            },
+            {
+                id: 3,
+                title: "Toyota Vitz 2017 Model - Pearl White (Clean)",
+                category: "Automotive",
+                price: 1150000,
+                county: "Mombasa",
+                town: "Nyali",
+                lat: -4.0435, lng: 39.6682,
+                seller: "Coast Auto Motors",
+                phone: "0733112233",
+                image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80",
+                description: "Very clean Toyota Vitz, low mileage (48,000km), buy and drive. Duty paid, pristine interior.",
+                date: "Yesterday",
+                views: 310
+            },
+            {
+                id: 4,
+                title: "Heavy Duty 3-Seater L-Shape Sofa Set",
+                category: "Home and Furniture",
+                price: 34000,
+                county: "Nakuru",
+                town: "Nakuru CBD",
+                lat: -0.3031, lng: 36.0800,
+                seller: "Rift Valley Furnitures",
+                phone: "0745678901",
+                image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80",
+                description: "Custom made suede fabric L-shape sofa with 5 free matching pillows. Strong mahogany wood frame.",
+                date: "2 days ago",
+                views: 215
+            },
+            {
+                id: 5,
+                title: "Professional Plumbing & Borehole Repair Services",
+                category: "Business & Professional Services",
+                price: 1500,
+                county: "Nairobi",
+                town: "Westlands",
+                lat: -1.2683, lng: 36.8110,
+                seller: "ProFlow Technical Experts",
+                phone: "0755889900",
+                image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80",
+                description: "Expert plumbers available 24/7 for residential and commercial plumbing, water pumps, and blocked drains.",
+                date: "Today, 11:00 AM",
+                views: 78
+            },
+            {
+                id: 6,
+                title: "Mitumba Bale - Grade A Mixed Women Dresses",
+                category: "Fashion and Clothing",
+                profilePhoto: "",
+                price: 14500,
+                county: "Kisumu",
+                town: "Milimani",
+                lat: -0.1022, lng: 34.7617,
+                seller: "Lake Victoria Boutique",
+                phone: "0766332211",
+                image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80",
+                description: "Direct UK bales, high quality fashionable summer and office dresses. Very high profit margin for retailers.",
+                date: "3 days ago",
+                views: 195
+            }
+        ];
+
+        // Mock Database: Pending & Verified Payments
+        let paymentClaims = [
+            { id: 101, sellerName: "Kamau Gadgets Ltd", phone: "0712345678", amount: 200, till: "8221168", code: "QHX7829KL9", status: "Verified", date: "2026-10-08" },
+            { id: 102, sellerName: "Rift Valley Furnitures", phone: "0745678901", amount: 200, till: "8221168", code: "QHJ892K1L2", status: "Pending", date: "2026-10-10" }
+        ];
+
+        // --- Router System ---
+        function router {
+            currentRoute = route;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderApp();
+        }
+
+        function renderApp() {
+            const container = document.getElementById('appContent');
+            if (!container) return;
+
+            if (currentRoute === 'home') {
+                container.innerHTML = renderHomePage();
+            } else if (currentRoute === 'nearby') {
+                container.innerHTML = renderNearbyPage();
+            } else if (currentRoute === 'categories') {
+                container.innerHTML = renderCategoriesPage();
+            } else if (currentRoute === 'dashboard') {
+                container.innerHTML = renderDashboardPage();
+            } else if (currentRoute === 'admin') {
+                container.innerHTML = renderAdminPage();
+            } else if (currentRoute === 'detail') {
+                container.innerHTML = renderDetailPage();
+            } else {
+                container.innerHTML = renderHomePage();
+            }
+        }
+
+        // --- View 1: Homepage ---
+        function renderHomePage() {
+            const filteredListings = listings.filter(item => {
+                const matchesSearch = item.title.toLowerCase().includes(searchKeyword.toLowerCase()) || 
+                                      item.description.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+                                      item.county.toLowerCase().includes(searchKeyword.toLowerCase());
+                const matchesCategory = selectedCategoryFilter === 'All' || item.category === selectedCategoryFilter;
+                const matchesCounty = selectedCountyFilter === 'All' || item.county === selectedCountyFilter;
+                return matchesSearch && matchesCategory && matchesCounty;
+            });
+
+            return `
+                <!-- Hero Banner -->
+                <div class="bg-gradient-to-r from-deepGreen to-emerald-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl mb-8 relative overflow-hidden">
+                    <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-10 translate-y-10">
+                        <i class="fa-solid fa-store text-9xl"></i>
+                    </div>
+                    <div class="max-w-2xl relative z-10">
+                        <span class="bg-warmYellow text-deepGreen text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">🇰🇪 Made for Kenya</span>
+                        <h1 class="text-3xl sm:text-5xl font-black mt-3 tracking-tight">Pata Unachotafuta.<br><span class="text-warmYellow">Uza Unachonacho.</span></h1>
+                        <p class="text-xs sm:text-sm text-gray-200 mt-2">Discover verified local shops, products, and professional services near you across all 47 counties.</p>
+                        
+                        <div class="mt-6 flex flex-wrap gap-3">
+                            <button onclick="router.navigate('nearby')" class="bg-warmYellow hover:bg-yellow-400 text-deepGreen font-bold px-5 py-3 rounded-xl shadow transition flex items-center space-x-2 text-sm">
+                                <i class="fa-solid fa-location-crosshairs"></i>
+                                <span>Find Items Near Me</span>
+                            </button>
+                            <button onclick="checkSellerAccess()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-5 py-3 rounded-xl transition border border-white/30 text-sm">
+                                Become a Seller (KSh 200)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Quick Bar -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold text-deepGreen">Browse Categories</h2>
+                        <button onclick="router.navigate('categories')" class="text-xs font-semibold text-deepGreen hover:underline">View All (<span id="catCount">${categories.length}</span>)</button>
+                    </div>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                        ${categories.slice(0, 6).map(cat => `
+                            <div onclick="selectCategory('${cat.name}')" class="bg-white p-3 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer border border-gray-100 text-center flex flex-col items-center justify-center group">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-deepGreen flex items-center justify-center text-lg mb-2 group-hover:bg-deepGreen group-hover:text-warmYellow transition">
+                                    <i class="fa-solid ${cat.icon}"></i>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 line-clamp-1">${cat.name}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Filters & Search Toolbar -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-6 flex flex-col sm:flex-row gap-3 items-center justify-between">
+                    <div class="flex items-center space-x-2 w-full sm:w-auto">
+                        <span class="text-xs font-semibold text-gray-500 whitespace-nowrap"><i class="fa-solid fa-filter text-deepGreen mr-1"></i> County:</span>
+                        <select id="countyFilterSelect" onchange="filterByCounty(this.value)" class="bg-gray-50 border rounded-lg px-3 py-1.5 text-xs text-gray-700 outline-none w-full sm:w-44">
+                            <option value="All">All 47 Counties</option>
+                            <option value="Nairobi">Nairobi</option>
+                            <option value="Mombasa">Mombasa</option>
+                            <option value="Nakuru">Nakuru</option>
+                            <option value="Kiambu">Kiambu</option>
+                            <option value="Kisumu">Kisumu</option>
+                            <option value="Uasin Gishu">Uasin Gishu</option>
+                            <option value="Machakos">Machakos</option>
+                            <option value="Meru">Meru</option>
+                        </select>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        Showing <strong class="text-deepGreen">${filteredListings.length}</strong> active Kenyan marketplace listings
+                    </div>
+                </div>
+
+                <!-- Listings Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="listingsGrid">
+                    ${filteredListings.length === 0 ? `
+                        <div class="col-span-full py-12 text-center bg-white rounded-2xl shadow-sm border">
+                            <i class="fa-solid fa-box-open text-4xl text-gray-300 mb-3"></i>
+                            <h3 class="font-bold text-gray-700">No listings found</h3>
+                            <p class="text-xs text-gray-500 mt-1">Try searching with a different keyword or county.</p>
+                            <button onclick="resetFilters()" class="mt-4 bg-deepGreen text-white text-xs px-4 py-2 rounded-lg font-bold">Reset Filters</button>
+                        </div>
+                    ` : filteredListings.map(item => `
+                        <div onclick="viewItem(${item.id})" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer border border-gray-100 flex flex-col justify-between group">
+                            <div>
+                                <div class="relative h-48 overflow-hidden bg-gray-100">
+                                    <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                    <span class="absolute top-3 left-3 bg-deepGreen/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">
+                                        ${item.category}
+                                    </span>
+                                    <span class="absolute bottom-3 right-3 bg-white/90 text-deepGreen text-[11px] font-bold px-2 py-0.5 rounded-md shadow">
+                                        KSh ${item.price.toLocaleString()}
+                                    </span>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-bold text-sm text-gray-800 line-clamp-1 group-hover:text-deepGreen transition">${item.title}</h3>
+                                    <p class="text-xs text-gray-500 mt-1 line-clamp-2">${item.description}</p>
+                                </div>
+                            </div>
+                            <div class="px-4 pb-4 pt-2 border-t border-gray-50 flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-location-dot text-amber-500"></i>
+                                    <span>${item.town},${item.county}</span>
+                                </div>
+                                <span class="text-deepGreen font-semibold">${item.seller}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // --- View 2: Nearby Search ---
+        function renderNearbyPage() {
+            return `
+                <div class="bg-white rounded-2xl p-6 shadow-sm border mb-6">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div>
+                            <span class="bg-emerald-100 text-deepGreen text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-location-crosshairs mr-1"></i> Geolocation Proximity</span>
+                            <h2 class="text-2xl font-black text-deepGreen mt-2">Find Items & Services Near Me</h2>
+                            <p class="text-xs text-gray-500 mt-1">Discover products and verified shops close to your current GPS location in Kenya.</p>
+                        </div>
+                        <button onclick="requestUserLocation()" class="bg-warmYellow hover:bg-yellow-400 text-deepGreen font-bold px-6 py-3 rounded-xl shadow transition flex items-center space-x-2 text-sm whitespace-nowrap">
+                            <i class="fa-solid fa-crosshairs"></i>
+                            <span>Get My Current Location</span>
+                        </button>
+                    </div>
+
+                    <div id="locationStatusBox" class="mt-4 p-3 bg-gray-50 rounded-xl text-xs text-gray-600 flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-info text-deepGreen mr-1"></i> Location permission not requested yet. Tap button above to search near you.</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-semibold">Distance Range:</span>
+                            <select id="distanceRangeSelect" onchange="updateDistanceRange(this.value)" class="bg-white border rounded px-2 py-1 text-xs">
+                                <option value="5">Within 5 km</option>
+                                <option value="10">Within 10 km</option>
+                                <option value="25">Within 25 km</option>
+                                <option value="50" selected>Within 50 km</option>
+                                <option value="1000">Any Distance</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="nearbyListingsGrid">
+                    ${listings.map(item => `
+                        <div onclick="viewItem(${item.id})" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer border border-gray-100 flex flex-col justify-between group">
+                            <div>
+                                <div class="relative h-48 overflow-hidden bg-gray-100">
+                                    <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                    <span class="absolute top-3 left-3 bg-warmYellow text-deepGreen text-[10px] font-bold px-2.5 py-1 rounded-full shadow">
+                                        <i class="fa-solid fa-location-dot"></i> ~1.4 km away
+                                    </span>
+                                    <span class="absolute bottom-3 right-3 bg-white/90 text-deepGreen text-[11px] font-bold px-2 py-0.5 rounded-md shadow">
+                                        KSh ${item.price.toLocaleString()}
+                                    </span>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-bold text-sm text-gray-800 line-clamp-1 group-hover:text-deepGreen transition">${item.title}</h3>
+                                    <p class="text-xs text-gray-500 mt-1 line-clamp-2">${item.description}</p>
+                                </div>
+                            </div>
+                            <div class="px-4 pb-4 pt-2 border-t border-gray-50 flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-map-pin text-deepGreen"></i>
+                                    <span>${item.town},${item.county}</span>
+                                </div>
+                                <span class="text-deepGreen font-semibold">${item.seller}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // --- View 3: Categories Page ---
+        function renderCategoriesPage() {
+            return `
+                <div class="mb-6">
+                    <h2 class="text-2xl font-black text-deepGreen">All Marketplace Categories</h2>
+                    <p class="text-xs text-gray-500 mt-1">Explore products and services catalogued across 16 primary Kenyan sectors.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    ${categories.map(cat => `
+                        <div onclick="selectCategory('${cat.name}')" class="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer border border-gray-100 flex items-center space-x-4 group">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-deepGreen flex items-center justify-center text-xl group-hover:bg-deepGreen group-hover:text-warmYellow transition">
+                                <i class="fa-solid ${cat.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-gray-800 group-hover:text-deepGreen transition">${cat.name}</h3>
+                                <p class="text-xs text-gray-400 mt-0.5">${cat.count} listings available</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // --- View 4: Item Detail Modal / Page ---
+        let currentViewingItem = null;
+        function viewItem(id) {
+            currentViewingItem = listings.find(i => i.id === id);
+            if (!currentViewingItem) return;
+
+            const container = document.getElementById('appContent');
+            container.innerHTML = `
+                <div class="mb-4">
+                    <button onclick="router.navigate('home')" class="text-xs font-semibold text-deepGreen flex items-center space-x-1 bg-white px-3 py-1.5 rounded-lg border shadow-sm inline-flex">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Back to Listings</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden h-80 bg-gray-100 shadow-inner mb-4">
+                            <img src="${currentViewingItem.image}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex space-x-2">
+                            <span class="bg-emerald-50 text-deepGreen text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-tag"></i> ${currentViewingItem.category}</span>
+                            <span class="bg-amber-50 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-location-dot"></i> ${currentViewingItem.town}, ${currentViewingItem.county}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400">Posted ${currentViewingItem.date} • Viewed ${currentViewingItem.views} times</span>
+                            <h1 class="text-2xl sm:text-3xl font-black text-deepGreen mt-1">${currentViewingItem.title}</h1>
+                            <div class="text-2xl font-black text-amber-600 mt-2">KSh ${currentViewingItem.price.toLocaleString()}</div>
+                            
+                            <hr class="my-4">
+                            
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Description</h3>
+                            <p class="text-sm text-gray-700 leading-relaxed">${currentViewingItem.description}</p>
+
+                            <div class="mt-6 bg-gray-50 p-4 rounded-2xl border flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-deepGreen text-warmYellow font-bold flex items-center justify-center text-sm shadow">
+                                        ${currentViewingItem.seller.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm text-gray-800">${currentViewingItem.seller}</h4>
+                                        <p class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check"></i> Verified Kenyan Seller</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 space-y-3">
+                            <a href="tel:${currentViewingItem.phone}" class="w-full bg-deepGreen hover:bg-darkGreenHover text-white py-3 rounded-xl font-bold text-sm shadow transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-phone text-warmYellow"></i>
+                                <span>Call Seller (${currentViewingItem.phone})</span>
+                            </a>
+                            <a href="https://wa.me/254${currentViewingItem.phone.slice(-9)}?text=Hello%20${encodeURIComponent(currentViewingItem.seller)},%20I%20am%20interested%20in%20your%20listing:%20${encodeURIComponent(currentViewingItem.title)}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow transition flex items-center justify-center space-x-2">
+                                <i class="fa-brands fa-whatsapp text-lg"></i>
+                                <span>Chat via WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- View 5: Seller Dashboard ---
+        function renderDashboardPage() {
+            if (!currentUser || currentUser.role !== 'seller') {
+                return `
+                    <div class="py-16 text-center bg-white rounded-3xl p-8 shadow-sm border max-w-lg mx-auto">
+                        <div class="w-16 h-16 bg-amber-100 text-deepGreen rounded-full flex items-center justify-center mx-auto text-2xl mb-4">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-deepGreen">Seller Dashboard Access</h2>
+                        <p class="text-xs text-gray-500 mt-2 mb-6">You need to sign in as a registered seller with a confirmed KSh 200 M-Pesa payment to manage your business inventory.</p>
+                        <button onclick="openModal('sellerModal')" class="bg-warmYellow text-deepGreen font-bold px-6 py-2.5 rounded-xl shadow text-sm">
+                            Register as Seller (KSh 200)
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="bg-deepGreen rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-6 flex flex-col md:flex-row items-center justify-between">
+                    <div>
+                        <span class="bg-warmYellow text-deepGreen text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-store mr-1"></i> Active Seller Account</span>
+                        <h1 class="text-2xl sm:text-3xl font-black mt-2">${currentUser.business.name}</h1>
+                        <p class="text-xs text-gray-200 mt-1"><i class="fa-solid fa-location-dot text-warmYellow mr-1"></i> ${currentUser.business.town}, ${currentUser.business.county} • Phone: ${currentUser.phone}</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 bg-white/10 p-4 rounded-2xl border border-white/20 text-center">
+                        <span class="text-xs text-gray-300 block">Registration Fee</span>
+                        <span class="text-warmYellow font-bold text-sm"><i class="fa-solid fa-circle-check"></i> Paid (KSh 200)</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border">
+                        <span class="text-xs text-gray-400 font-semibold uppercase">Active Listings</span>
+                        <div class="text-3xl font-black text-deepGreen mt-1">4</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border">
+                        <span class="text-xs text-gray-400 font-semibold uppercase">Total Views</span>
+                        <div class="text-3xl font-black text-amber-600 mt-1">514</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border">
+                        <span class="text-xs text-gray-400 font-semibold uppercase">Customer Enquiries</span>
+                        <div class="text-3xl font-black text-emerald-600 mt-1">18</div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 shadow-sm border">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-base text-deepGreen">Your Inventory Listings</h3>
+                        <button onclick="openAddListingModal()" class="bg-deepGreen text-white text-xs font-bold px-4 py-2 rounded-xl shadow">
+                            <i class="fa-solid fa-plus mr-1"></i> Add New Product
+                        </button>
+                    </div>
+                    <div class="divide-y">
+                        ${listings.slice(0, 2).map(item => `
+                            <div class="py-4 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <img src="${item.image}" class="w-14 h-14 object-cover rounded-xl shadow-inner">
+                                    <div>
+                                        <h4 class="font-bold text-sm text-gray-800">${item.title}</h4>
+                                        <p class="text-xs text-amber-600 font-bold">KSh ${item.price.toLocaleString()}</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded-lg font-semibold">Edit</button>
+                                    <button class="bg-red-50 hover:bg-red-100 text-red-600 text-xs px-3 py-1.5 rounded-lg font-semibold">Delete</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- View 6: Admin Dashboard ---
+        function renderAdminPage() {
+            return `
+                <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl mb-6 flex flex-col md:flex-row items-center justify-between">
+                    <div>
+                        <span class="bg-amber-500 text-slate-900 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-shield-halved mr-1"></i> Administrator Control Center</span>
+                        <h1 class="text-2xl sm:text-3xl font-black mt-2">Pata Market Super Admin</h1>
+                        <p class="text-xs text-slate-400 mt-1">Manage M-Pesa Till 8221168 manual verification claims and seller activations.</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 bg-slate-800 p-4 rounded-2xl border border-slate-700 text-center">
+                        <span class="text-xs text-slate-400 block">Total Revenue Verified</span>
+                        <span class="text-warmYellow font-bold text-lg">KSh 400</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 shadow-sm border mb-8">
+                    <h3 class="font-bold text-base text-deepGreen mb-4"><i class="fa-solid fa-money-bill-transfer text-amber-600 mr-2"></i> Pending M-Pesa Till 8221168 Claims</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 border-b">
+                                    <th class="p-3">Seller Name</th>
+                                    <th class="p-3">Phone</th>
+                                    <th class="p-3">Amount</th>
+                                    <th class="p-3">M-Pesa Code</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                ${paymentClaims.map(claim => `
+                                    <tr>
+                                        <td class="p-3 font-bold text-gray-800">${claim.sellerName}</td>
+                                        <td class="p-3 text-gray-600">${claim.phone}</td>
+                                        <td class="p-3 font-bold text-deepGreen">KSh ${claim.amount}</td>
+                                        <td class="p-3 font-mono font-bold text-amber-700">${claim.code}</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${claim.status === 'Verified' ? 'bg-emerald-100 text-deepGreen' : 'bg-amber-100 text-amber-800'}">${claim.status}</span></td>
+                                        <td class="p-3">
+                                            ${claim.status === 'Pending' ? `
+                                                <button onclick="approvePaymentClaim(${claim.id})" class="bg-deepGreen text-white px-3 py-1 rounded font-bold hover:bg-darkGreenHover">Verify & Activate</button>
+                                            ` : `<span class="text-gray-400">Approved</span>`}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Interactive Actions & Modals ---
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        let isRegisteringAuth = false;
+        function toggleAuthMode() {
+            isRegisteringAuth = !isRegisteringAuth;
+            document.getElementById('authModalTitle').innerText = isRegisteringAuth ? 'Create Pata Market Account' : 'Sign In to Pata Market';
+            document.getElementById('nameFieldContainer').classList.toggle('hidden', !isRegisteringAuth);
+            document.getElementById('authSubmitBtn').innerText = isRegisteringAuth ? 'Create Account' : 'Sign In';
+            document.getElementById('authToggleText').innerText = isRegisteringAuth ? 'Already have an account?' : "Don't have an account?";
+            document.getElementById('authToggleBtn').innerText = isRegisteringAuth ? 'Sign In' : 'Create Account';
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const emailPhone = document.getElementById('authEmailPhone').value;
+            const name = isRegisteringAuth ? document.getElementById('authName').value : "Kenyan User";
+            
+            currentUser = {
+                name: name,
+                phone: emailPhone,
+                role: 'buyer',
+                isPaidSeller: false
+            };
+
+            closeModal('authModal');
+            updateNavAuth();
+            alert(`Welcome to Pata Market, ${name}!`);
+        }
+
+        function updateNavAuth() {
+            const area = document.getElementById('authNavArea');
+            if (currentUser) {
+                area.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <button onclick="router.navigate('dashboard')" class="bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg text-xs font-bold">
+                            <i class="fa-solid fa-user-gear mr-1"></i> Dashboard
+                        </button>
+                        ${currentUser.role === 'admin' ? `<button onclick="router.navigate('admin')" class="bg-amber-500 text-deepGreen px-2.5 py-1.5 rounded-lg text-xs font-bold">Admin</button>` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        function checkSellerAccess() {
+            if (!currentUser) {
+                alert("Please sign in first to register as a seller.");
+                openModal('authModal');
+                return;
+            }
+            openModal('sellerModal');
+        }
+
+        let tempBusinessData = null;
+        function handleSellerBusinessSubmit(e) {
+            e.preventDefault();
+            tempBusinessData = {
+                name: document.getElementById('bizName').value,
+                county: document.getElementById('bizCounty').value,
+                town: document.getElementById('bizTown').value,
+                phone: document.getElementById('bizPhone').value,
+                category: document.getElementById('bizCategory').value
+            };
+            document.getElementById('sellerStep1').classList.add('hidden');
+            document.getElementById('sellerStep2').classList.remove('hidden');
+        }
+
+        function submitMpesaPayment() {
+            const code = document.getElementById('mpesaCodeInput').value.trim();
+            if (!code) {
+                alert("Please enter a valid M-Pesa transaction code.");
+                return;
+            }
+            paymentClaims.push({
+                id: Date.now(),
+                sellerName: tempBusinessData.name,
+                phone: tempBusinessData.phone,
+                amount: 200,
+                till: "8221168",
+                code: code,
+                status: "Pending",
+                date: "Today"
+            });
+            document.getElementById('sellerStep2').classList.add('hidden');
+            document.getElementById('sellerStep3').classList.remove('hidden');
+        }
+
+        function simulateStkPush() {
+            const phone = document.getElementById('bizPhone').value || "0712345678";
+            alert(`Safaricom M-Pesa STK Push sent to ${phone} for KSh 200. Please enter your PIN on your phone prompt.`);
+            setTimeout(() => {
+                document.getElementById('mpesaCodeInput').value = "QHJ" + Math.floor(100000 + Math.random() * 900000);
+                submitMpesaPayment();
+            }, 2000);
+        }
+
+        function approvePaymentClaim(id) {
+            const claim = paymentClaims.find(c => c.id === id);
+            if (claim) {
+                claim.status = "Verified";
+                if (currentUser) {
+                    currentUser.role = 'seller';
+                    currentUser.isPaidSeller = true;
+                    currentUser.business = tempBusinessData || { name: claim.sellerName, county: "Nairobi", town: "CBD" };
+                }
+                renderApp();
+                alert("Payment verified successfully! Seller account is now active.");
+            }
+        }
+
+        function openStaticModal(title, bodyText) {
+            document.getElementById('staticModalTitle').innerText = title;
+            document.getElementById('staticModalBody').innerText = bodyText;
+            openModal('staticModal');
+        }
+
+        function handleSearchInput(val) {
+            searchKeyword = val;
+            if (currentRoute !== 'home') router.navigate('home');
+            else renderApp();
+        }
+
+        function selectCategory(catName) {
+            selectedCategoryFilter = catName;
+            router.navigate('home');
+        }
+
+        function filterByCounty(county) {
+            selectedCountyFilter = county;
+            renderApp();
+        }
+
+        function resetFilters() {
+            searchKeyword = '';
+            selectedCategoryFilter = 'All';
+            selectedCountyFilter = 'All';
+            renderApp();
+        }
+
+        function requestUserLocation() {
+            const statusBox = document.getElementById('locationStatusBox');
+            statusBox.innerHTML = `<span><i class="fa-solid fa-spinner fa-spin text-deepGreen mr-2"></i> Requesting GPS coordinates via browser...</span>`;
+            
+            setTimeout(() => {
+                userCoords = { lat: -1.2863, lng: 36.8172 };
+                statusBox.innerHTML = `<span><i class="fa-solid fa-circle-check text-deepGreen mr-2"></i> Location acquired successfully (Nairobi Region). Showing listings sorted by proximity.</span>`;
+            }, 1200);
+        }
+
+        function updateDistanceRange(dist) {
+            activeNearbyDistance = parseInt(dist);
+        }
+
+        function openAddListingModal() {
+            alert("Add Listing feature: Sellers can publish new items instantly once verified.");
+        }
+
+        // Initial Boot
+        window.onload = function() {
+            renderApp();
+        };
+    </script>
+</body>
+</html>
